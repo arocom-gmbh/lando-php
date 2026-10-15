@@ -5,8 +5,8 @@ RUN apt-get update -qq && \
     apt-get purge -y -qq libmagickwand* && \
     apt-get autoremove -y -qq && \
     rm -rf /etc/ImageMagick-6 && \
-    # Add some additional CLI Tools. \
-    apt-get install -y -qq libjpeg-dev libpng-dev libwebp-dev jpegoptim optipng pngquant webp sudo mycli && \
+    # Add some additional image formats and CLI Tools. \
+    apt-get install -y -qq libavif-dev libjpeg-dev libpng-dev libwebp-dev jpegoptim optipng pngquant webp sudo mycli && \
     # Install GhostScript, for PDF generation.
     apt-get install -y -qq ghostscript && \
     # Build ImageMagick 7
@@ -28,8 +28,12 @@ RUN apt-get update -qq && \
     ./configure && \
     make && \
     make install && \
+    cd /root && \
     rm -rf /root/imagick-3.7.0 /root/imagick.tar.gz && \
     docker-php-ext-enable imagick && \
+    # Install Python 3, pipx and copier.
+    apt-get install -y -qq python3 python3-venv pipx && \
+    PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install 'copier>=9,<10' --force && \
     # Enable password-less sudo for default user. \
     usermod -aG sudo www-data && \
     passwd -d www-data && \
