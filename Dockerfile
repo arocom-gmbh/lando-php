@@ -6,7 +6,7 @@ RUN apt-get update -qq && \
     apt-get autoremove -y -qq && \
     rm -rf /etc/ImageMagick-6 && \
     # Add some additional image formats and CLI Tools. \
-    apt-get install -y -qq libavif-dev libjpeg-dev libpng-dev libwebp-dev jpegoptim optipng pngquant webp sudo mycli && \
+    apt-get install -y -qq libheif-dev libheif-plugin-aomenc libheif-plugin-dav1d libjpeg-dev libpng-dev libwebp-dev jpegoptim optipng pngquant webp sudo mycli && \
     # Install GhostScript, for PDF generation.
     apt-get install -y -qq ghostscript && \
     # Build ImageMagick 7
@@ -19,7 +19,6 @@ RUN apt-get update -qq && \
     make install && \
     ldconfig /usr/local/lib && \
     rm -rf /root/imagemagick && \
-    sed -i 's/<policy domain="coder" rights="read|write" pattern="{GIF,JPEG,PNG,WEBP}" \/>/<policy domain="coder" rights="read|write" pattern="{GIF,JPEG,PDF,PNG,WEBP}" \/>/g' /usr/local/etc/ImageMagick-7/policy.xml && \
     # Build the PHP imagick extension.
     curl https://pecl.php.net/get/imagick-3.7.0.tgz -L -o /root/imagick.tar.gz && \
     tar -xzf /root/imagick.tar.gz -C /root && \
